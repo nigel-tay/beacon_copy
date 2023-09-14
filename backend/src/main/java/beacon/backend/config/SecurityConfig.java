@@ -27,11 +27,10 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests((requests) -> requests
+                .requestMatchers(HttpMethod.GET, "**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/login", "/api/register", "/api/upload").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/pets/**", "/api/pets/count/reports").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/pets/features", "/api/pets/add", "/api/sightings").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/pets/lost/**", "/api/users/edit", "/api/sightings/**", "/api/pets/reports**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/sightings**").authenticated()
                 .anyRequest().authenticated());
         return http.build();
     }
