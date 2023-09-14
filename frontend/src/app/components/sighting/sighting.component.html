@@ -1,0 +1,30 @@
+<form class="flex flex-col justify-center items-center" [formGroup]="sightingFormGroup">
+    <h1 class="mt-5 text-4xl">Add Sighting</h1>
+    <div class="mt-5 bg-yellow-primary w-[350px] h-16 rounded-full flex items-center border">
+        <mat-icon class="ml-5 scale-150">image</mat-icon>
+        <input #imageInput type="file"
+            class="ml-5 w-[75%] bg-yellow-primary focus:outline-none flex"
+            placeholder="profile image (optional)">
+    </div>
+    <div class="mt-5 bg-yellow-primary w-[350px] h-16 rounded-full flex items-center border">
+        <mat-icon class="ml-5 scale-150">calendar_month_sharp</mat-icon>
+        <input type="date"
+            class="ml-5 w-[75%] h-4/5 text-2xl bg-yellow-primary focus:outline-none"
+            formControlName="date_time">
+    </div>
+    <div class="mt-5 bg-yellow-primary w-[350px] h-auto rounded-md p-2 flex justify-center items-center border text-lg">
+        <mat-icon class="ml-3 scale-150">border_color_sharp</mat-icon>
+        <textarea class="bg-yellow-primary pl-5 focus:outline-none" formControlName="content" cols="30" rows="2" placeholder="add a description"></textarea>
+    </div>
+    <button 
+            type="button"
+            [className]="
+                sightingFormGroup.valid ? 
+                'mt-5 text-2xl py-2 px-6 rounded-full border bg-blue-button  hover:bg-blue-button-hover' : 
+                'mt-5 text-2xl py-2 px-6 rounded-full border text-grey-text bg-grey hover:cursor-default'
+                "
+            (click)="handleSightingFormSubmit()"
+            [disabled]="!sightingFormGroup.valid">
+            Lodge Sighting
+        </button>
+</form>

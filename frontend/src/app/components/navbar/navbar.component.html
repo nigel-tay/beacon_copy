@@ -1,0 +1,61 @@
+<div class="flex justify-between h-20 bg-yellow-primary sticky">
+    <img (click)="closeDropDown()" [routerLink]="loggedIn ? ['/boards'] : ['/login']" class="py-2 pl-8 hover:cursor-pointer" src="/assets/images/navbar_icon.png" alt="Navbar Icon">
+
+    <div *ngIf="viewWidth$ | async as vw" class="h-full w-auto">
+        <div *ngIf="vw === 640" class="h-full">
+            <button (click)="toggleHamburger()" data-collapse-toggle="hamburger-dropdown" type="button" class="h-full mr-3 p-2 rounded-lg md:hidden focus:ring-2 focus:ring-black">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                </svg>
+            </button>
+            <div 
+            [className]="hamburgerStatus == 'open' ?
+                'block w-auto absolute rounded-md right-[20px] bg-yellow-primary mt-2' :
+                'hidden'
+                "
+                id="hamburger-dropdown">
+                <ul class="text-xl border rounded-md flex flex-col items-center">
+                    <li *ngIf="!loggedIn">
+                      <a [routerLink]="['/boards']" class="block py-2 px-4" (click)="closeDropDown()">Boards</a>
+                    </li>
+                    <li *ngIf="!loggedIn">
+                        <a [routerLink]="['/login']" class="block py-2 px-4" (click)="closeDropDown()">Login</a>
+                    </li>
+                    <li *ngIf="!loggedIn">
+                        <a [routerLink]="['/register']" class="block py-2 px-4" (click)="closeDropDown()">Register</a>
+                    </li>
+                    <li *ngIf="loggedIn">
+                      <a (click)="navigateWithId('my-profile')" class="block py-2 px-4 hover:cursor-pointer" (click)="closeDropDown()">My Profile</a>
+                    </li>
+                    <li *ngIf="loggedIn">
+                      <a [routerLink]="['/logout']" class="block py-2 px-4" (click)="closeDropDown()">Logout</a>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+        <div *ngIf="vw === 768 || vw === 1024" class="h-full">
+            <div class="flex items-center h-full">
+                <div [routerLink]="['/boards']" class="ml-14 hover:cursor-pointer hover:underline underline-offset-8">
+                    <p class="text-2xl">Boards</p>
+                </div>
+                <div *ngIf="!loggedIn" [routerLink]="['/login']" class="ml-14 hover:cursor-pointer hover:underline underline-offset-8">
+                    <p class="text-2xl">Login</p>
+                </div>
+                <div *ngIf="!loggedIn" [routerLink]="['/register']" class="ml-14 mr-8 hover:cursor-pointer hover:underline underline-offset-8">
+                    <p class="text-2xl">Register</p>
+                </div>
+        
+                <div *ngIf="loggedIn" class="ml-14 mr-8 hover:cursor-pointer hover:underline underline-offset-8 dropdown">
+                    <p (click)="navigateWithId('my-profile')" class="text-2xl">Profile</p>
+                    <div class="dropdown-container">
+                        <div class="dropdown-spacing"></div>
+                        <div class="dropdown-content bg-yellow-primary">
+                            <p (click)="navigateWithId('my-profile')" class="text-2xl hover:underline underline-offset-8">My Profile</p>
+                            <p [routerLink]="['/logout']" class="text-2xl hover:underline underline-offset-8">Logout</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

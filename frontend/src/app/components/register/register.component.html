@@ -1,0 +1,91 @@
+<div class="flex sm:flex-row flex-col items-center justify-center h-[90vh]">
+    <div class="flex flex-col">
+        <h1 class="text-4xl mb-5">Register</h1>
+        <div *ngIf="!registerForm.valid"
+            class="bg-yellow-primary px-2 pb-2 mt-[-3.5%] w-[360px] rounded-md border"
+            >
+            <div *ngIf="registerForm.get('username')?.hasError('required')" class="flex mt-2">
+                <mat-icon class="bg-pink-accent rounded-sm">close</mat-icon>
+                <div class="ml-2">Please enter a username</div>
+            </div>
+            <div *ngIf="registerForm.get('username')?.errors?.['minlength']" class="flex mt-2">
+                <mat-icon class="bg-pink-accent rounded-sm">close</mat-icon>
+                <div class="ml-2">Username needs to be 5 Characters or more</div>
+            </div>
+            <div *ngIf="registerForm.get('email')?.hasError('required')" class="flex mt-2">
+                <mat-icon class="bg-pink-accent rounded-sm">close</mat-icon>
+                <div class="ml-2">Please enter an email</div>
+            </div>
+            <div *ngIf="registerForm.get('email')?.errors?.['email']" class="flex mt-2">
+                <mat-icon class="bg-pink-accent rounded-sm">close</mat-icon>
+                <div class="ml-2">Please enter a valid email</div>
+            </div>
+            <div *ngIf="registerForm.get('password')?.errors?.['required']" class="flex mt-2">
+                <mat-icon class="bg-pink-accent rounded-sm">close</mat-icon>
+                <div class="ml-2">Please enter a password</div>
+            </div>
+            <div *ngIf="registerForm.get('password')?.errors?.['minlength']" class="flex mt-2">
+                <mat-icon class="bg-pink-accent rounded-sm">close</mat-icon>
+                <div class="ml-2">Password needs to be 8 Characters or more</div>
+            </div>
+        </div>
+        <div *ngIf="registerForm.valid" 
+            class="bg-yellow-primary px-2 py-2 mt-[-3.5%] w-[360px] rounded-md border flex justify-center items-center z-0"
+            >
+            <mat-icon class="bg-blue-button-hover rounded-md ml-1 mr-3 w-full">done</mat-icon>
+            <div class="w-5/6">Good to go! Enable email notifications by filling up the address field. Or leave it empty, we're not your boss!</div>
+        </div>
+    </div>
+    <form [formGroup]="registerForm" class="flex flex-col justify-center items-center sm:ml-5 lg:ml-[10%] mt-5">
+        <div class="sm:flex sm:flex-col justify-items-center items-center mb-10 hidden">
+            <img src="/assets/images/login_logo.svg" alt="beacon logo">
+        </div>
+        <div class="bg-yellow-primary w-[350px] h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">account_circle</mat-icon>
+            <input type="text" class="ml-5 w-[75%] h-4/5 text-lg bg-yellow-primary focus:outline-none" formControlName="username" placeholder="username">
+        </div>
+        <div class="mt-5 bg-yellow-primary w-[350px] h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">email</mat-icon>
+            <input type="text"
+                class="ml-5 w-[75%] h-4/5 text-lg bg-yellow-primary focus:outline-none"
+                placeholder="email"
+                formControlName="email">
+        </div>
+        <div class="mt-5 bg-yellow-primary w-[350px] h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">lock</mat-icon>
+            <input #passwordInput [type]="visibility ? 'text': 'password'"
+                autocomplete="on"
+                class="ml-5 w-[70%] h-4/5 text-lg bg-yellow-primary focus:outline-none"
+                placeholder="password"
+                formControlName="password">
+            <mat-icon *ngIf="!visibility"class="scale-150 hover:cursor-pointer" (click)="toggleVisibility()">visibility_off</mat-icon>
+            <mat-icon *ngIf="visibility" class="scale-150 hover:cursor-pointer" (click)="toggleVisibility()">visibility</mat-icon>
+        </div>
+        <div class="w-[350px] mt-5 bg-yellow-primary h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">home</mat-icon>
+            <input #addressInput type="text"
+                class="ml-5 w-[75%] h-4/5 text-lg bg-yellow-primary focus:outline-none"
+                placeholder="address (enables notifications)"
+                formControlName="address">
+        </div>
+        <div class="w-[350px] mt-5 bg-yellow-primary h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">image</mat-icon>
+            <input #imageInput type="file"
+                class="ml-5 w-[75%] bg-yellow-primary focus:outline-none flex"
+                placeholder="profile image (optional)"
+                formControlName="image">
+        </div>
+        <button 
+            type="button"
+            [className]="
+                registerForm.valid ? 
+                'mt-5 text-2xl py-2 px-6 rounded-full border bg-blue-button  hover:bg-blue-button-hover' : 
+                'mt-5 text-2xl py-2 px-6 rounded-full border text-grey-text bg-grey hover:cursor-default'
+                "
+            (click)="handleFormSubmit()"
+            [disabled]="!registerForm.valid">
+            Sign up
+        </button>
+        <a [routerLink]="['/login']" class="mt-5 hover:underline hover:text-yellow-primary text-sm">Login instead</a>
+    </form>
+</div>

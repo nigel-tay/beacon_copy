@@ -1,0 +1,30 @@
+<div class="flex justify-center">
+    <form [formGroup]="reportFormGroup" class="flex flex-col m-0">
+        <h1 class="mt-5 text-4xl">Report Missing Pet</h1>
+        <div class="w-[350px] mt-5 bg-yellow-primary h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">add_location_alt_sharp</mat-icon>
+            <input #addressInput type="text"
+                class="ml-5 w-[75%] h-4/5 text-2xl bg-yellow-primary focus:outline-none"
+                placeholder="last seen location">
+        </div>
+        <div class="mt-5 bg-yellow-primary w-[350px] h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">calendar_month_sharp</mat-icon>
+            <input type="date"
+                class="ml-5 w-[75%] h-4/5 text-2xl bg-yellow-primary focus:outline-none"
+                formControlName="dateTime">
+        </div>
+        <textarea class="bg-yellow-primary border rounded-md mt-5 p-2 text-lg focus:outline-none"
+        formControlName="description" id="" cols="5" rows="5" placeholder="Include any details which might help with the search"></textarea>
+        <button 
+            type="button"
+            [className]="
+                reportFormGroup.valid ? 
+                'mt-5 text-2xl py-2 px-6 rounded-full border bg-blue-button  hover:bg-blue-button-hover' : 
+                'mt-5 text-2xl py-2 px-6 rounded-full border text-grey-text bg-grey hover:cursor-default'
+                "
+            (click)="handleFormSubmit()"
+            [disabled]="!reportFormGroup.valid">
+            Lodge Report
+        </button>
+    </form>
+</div>

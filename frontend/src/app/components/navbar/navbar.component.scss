@@ -1,0 +1,33 @@
+.dropdown {
+    position: relative;
+    display: inline-block;
+
+    &:hover .dropdown-container {display: block;}
+
+    &-container {
+        display: none;
+        position: absolute;
+        left: -90px;
+        z-index: 1;
+    }
+    
+    &-spacing {
+        width: 160px;;
+        height: 15px;
+        padding: 0;
+    }
+    
+    &-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+        padding: 5px;
+        border: solid black 1px;
+
+        p {
+            padding: 5px 10px;
+        }
+    }
+}

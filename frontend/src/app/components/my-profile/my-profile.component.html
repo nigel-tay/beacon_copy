@@ -1,0 +1,53 @@
+<div class="flex justify-center items-center">
+    <div [className]="
+        modalOpen ? 
+        'opacity-25 flex justify-center items-center flex-col md:flex-row' : 
+        'flex justify-center items-center flex-col md:flex-row'">
+        <div>
+            <div class="bg-yellow-primary w-[65vw] p-5 mt-2 md:ml-7 flex justify-center items-center flex-col rounded-md md:w-[30vw] md:mt-20">
+                <img *ngIf="user.image" [src]="user.image" alt="User image" class="w-36 md:w-52 rounded-full">
+                <div *ngIf="!user.image" class="h-36 flex items-center">
+                    <mat-icon class="scale-[6]">account_circle_sharp</mat-icon>
+                </div>
+                <div class="text-sm mt-2 text-center">@{{user.username}} | {{user.email}}</div>
+                <div class="text-sm text-center" *ngIf="user.address">{{user.address}}</div>
+                <button type="button" class="mt-5 text-md py-2 px-6 rounded-full border bg-blue-button  hover:bg-blue-button-hover" (click)="handleOpenModal()">
+                    {{user.address? 'Change address' : 'Add address'}}
+                </button>
+            </div>
+        </div>
+        <div class="flex justify-center items-center flex-col md:ml-5">
+            <button 
+            [routerLink]="['/register-pet']"
+            type="button"
+            class="mt-5 text-2xl py-2 px-6 rounded-full border bg-blue-button  hover:bg-blue-button-hover"
+                >Register new Pet</button>
+            <div class="flex flex-wrap justify-center mt-3 hover:cursor-pointer">
+                <div *ngFor="let pet of petsArray"
+                [routerLink]="['/pet-profile', pet.id]"
+                [className]="pet.lost ?
+                    'bg-pink-accent border mx-1 w-[35vw] md:w-[20vw] p-5 mt-2 flex justify-center items-center flex-col rounded-md' :
+                    'bg-yellow-primary border mx-1 w-[35vw] md:w-[20vw] p-5 mt-2 flex justify-center items-center flex-col rounded-md'">
+                    <img [src]="pet.image" alt="User image" class="w-[90%] rounded-full">
+                    <div class="text-sm mt-2 text-center">{{pet.name}}, {{pet.type}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModal"
+        [className]="
+        modalOpen ? 'bg-yellow-primary p-2 z-10 fixed w-[80%] top-10 overflow-auto rounded-lg md:w-[30%] '
+        : 'hidden'
+        ">
+        <!-- Modal content -->
+        <div class="bg-yellow-primary w-full">
+            <span (click)="handleOpenModal()" class="bg-pink-accent rounded-sm float-right text-md md:text-xl text-grey px-2 hover:text-black hover:cursor-pointer">&times;</span>
+            <div class="flex flex-col justify-center items-center">
+                <textarea #editAddressInput class="mt-2 bg-blue-button-hover border rounded-sm p-2" type="text" placeholder="Leave blank to remove address and unsubscribe from notifications"></textarea>
+                <button (click)="handleEditAddressSubmit()" type="button" class="mt-5 text-md py-2 px-6 w-3/4 rounded-full border bg-blue-button  hover:bg-blue-button-hover">
+                    Confirm changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

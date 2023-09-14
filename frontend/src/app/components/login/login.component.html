@@ -1,0 +1,20 @@
+<div class="flex items-center flex-col h-[90vh]">
+    <div class="flex flex-col justify-items-center items-center mt-40">
+        <img src="/assets/images/login_logo.svg" alt="beacon logo">
+        <h1 class="text-4xl">Beacon</h1>
+    </div>
+    <form [formGroup]="loginForm" class="flex flex-col justify-center items-center mt-12">
+        <div class="bg-yellow-primary w-[350px] h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">account_circle</mat-icon>
+            <input type="text" class="ml-5 w-[75%] h-4/5 text-2xl bg-yellow-primary focus:outline-none" placeholder="username" formControlName="username">
+        </div>
+        <div class="mt-5 bg-yellow-primary w-[350px] h-16 rounded-full flex items-center border">
+            <mat-icon class="ml-5 scale-150">lock</mat-icon>
+            <input type="password" class="ml-5 w-[75%] h-4/5 text-2xl bg-yellow-primary focus:outline-none" placeholder="password" formControlName="password">
+            <button (click)="handleSubmit()" (keyup.enter)="handleSubmit()" type="button" class="flex justify-center items-center p-2 ml-2 mr-3 rounded-full border bg-blue-button hover:bg-blue-button-hover">
+                <mat-icon>login</mat-icon>
+            </button>
+        </div>
+        <a [routerLink]="['/register']" class="mt-5 hover:underline hover:text-yellow-primary text-sm">Register here instead</a>
+    </form>
+</div>

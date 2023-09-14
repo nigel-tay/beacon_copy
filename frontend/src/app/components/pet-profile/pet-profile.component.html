@@ -1,0 +1,125 @@
+<div class="flex justify-center items-center flex-col">
+    <div>
+        <div 
+            [className]="pet.lost ?
+            'bg-pink-accent border mx-1 w-[70vw] p-5 mt-2 flex justify-center items-center flex-col rounded-md md:w-[30vw]' :
+            'bg-yellow-primary border px-1 w-[70vw] p-5 flex justify-center items-center flex-col rounded-md md:w-[30vw] mt-40'">
+            <img [src]="pet.image" alt="User image" class="w-36 rounded-full">
+            <div class="text-sm mt-2">{{pet.name}} | {{pet.type}}</div>
+            <button *ngIf="pet.lost && userId !== pet.ownerId" (click)="handleAddSighting()" type="button" class="bg-blue-button hover:bg-blue-button-hover rounded-full px-2 py-1 w-2/3 mt-2">Add Sighting</button>
+            <button 
+                *ngIf="pet.ownerId == userId && report.id.length === 0"
+                [routerLink]="['/reports', pet.id]"
+                type="button"
+                class="mt-5 text-2xl py-2 px-6 rounded-full border bg-blue-button  hover:bg-blue-button-hover"
+                >Report Lost</button>
+                <button *ngIf="pet.lost && userId === pet.ownerId" (click)="handleMarkPetAsFound()" type="button" class="bg-blue-button hover:bg-blue-button-hover rounded-full px-2 py-1 w-2/3 mt-2">Mark Pet as Found</button>
+                <div class="mt-5 bg-yellow-primary w-[90%] p-2 rounded-md flex flex-col items-start border">
+                    Features:
+                    <div class="flex flex-wrap">
+                        <div *ngIf="featuresArray.length === 0">Not indicated</div>
+                        <div *ngFor="let selectedFeature of featuresArray" class="px-2 py-1 mx-1 my-1 text-lg border rounded-md">
+                            {{selectedFeature}}
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div *ngIf="report.id && viewWidth === 640" class="bg-yellow-primary rounded-t-md mt-5 w-[90vw] h-64 flex flex-col items-center">
+        <div class="w-[90%] md:w-[30vw] md:h-80 pt-2" *ngIf="report.id.length > 0">
+            <h2 class="text-2xl">Last seen:</h2>
+                <google-map
+                    #googleMap
+                    height="240%"
+                    width="100%"
+                    [zoom]="zoom"
+                    [center]="center"
+                    [options]="options"
+                    (mapClick)="eventHandler($event,'mapClick')"
+                    (mapDblclick)="eventHandler($event,'mapDblclick')"
+                    (mapDrag)="eventHandler($event,'mapDrag')"
+                    (mapDragend)="eventHandler($event,'mapDragend')"
+                    (mapRightclick)="eventHandler($event,'mapRightclick')"
+                    (positionChanged)="eventHandler($event,'marker_positionChanged')"
+                    (zoomChanged)="eventHandler($event,'zoomChanged')"
+                    >
+                    <map-marker
+                        #markerElem="mapMarker"
+                        *ngFor="let marker of markers"
+                        [position]="marker.position"
+                        [label]="marker.label"
+                        [title]="marker.title"
+                        [options]="marker.options"
+                        (mapClick)="openInfo(markerElem, marker.info)"
+                    >
+                    </map-marker>
+                </google-map>
+            <div class="mt-2">
+                <button (click)="zoomIn()" class="bg-blue-button hover:bg-blue-button-hover rounded-full px-2 py-1">Zoom In</button>
+                <button (click)="zoomOut()" class="bg-blue-button hover:bg-blue-button-hover rounded-full px-2 py-1 ml-2">Zoom Out</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="report.id && (viewWidth === 768 || viewWidth === 1024)" class="bg-yellow-primary rounded-t-md mt-5 w-[90vw] md:w-[60vw] h-64 md:h-96 flex flex-col items-center md:items-start md:pl-5">
+        <div class="w-[30vw] h-80 pt-2" *ngIf="report.id.length > 0">
+            <h2 class="text-2xl">Last seen:</h2>
+                <google-map
+                    #googleMap
+                    height="90%"
+                    width="189%"
+                    [zoom]="zoom"
+                    [center]="center"
+                    [options]="options"
+                    (mapClick)="eventHandler($event,'mapClick')"
+                    (mapDblclick)="eventHandler($event,'mapDblclick')"
+                    (mapDrag)="eventHandler($event,'mapDrag')"
+                    (mapDragend)="eventHandler($event,'mapDragend')"
+                    (mapRightclick)="eventHandler($event,'mapRightclick')"
+                    (positionChanged)="eventHandler($event,'marker_positionChanged')"
+                    (zoomChanged)="eventHandler($event,'zoomChanged')"
+                    >
+                    <map-marker
+                        #markerElem="mapMarker"
+                        *ngFor="let marker of markers"
+                        [position]="marker.position"
+                        [label]="marker.label"
+                        [title]="marker.title"
+                        [options]="marker.options"
+                        (mapClick)="openInfo(markerElem, marker.info)"
+                    >
+                    </map-marker>
+                </google-map>
+            <div class="mt-2">
+                <button (click)="zoomIn()" class="bg-blue-button hover:bg-blue-button-hover rounded-full px-2 py-1">Zoom In</button>
+                <button (click)="zoomOut()" class="bg-blue-button hover:bg-blue-button-hover rounded-full px-2 py-1 ml-2">Zoom Out</button>
+            </div>
+        </div>
+    </div>
+    <p *ngIf="report.id" class="text-lg bg-yellow-primary w-[90vw] md:w-[60vw] rounded-b-md pl-5 pb-2">
+        Description:<br>{{report.description}}
+    </p>
+    <div *ngIf="pet.lost" class="flex flex-col justify-center items-center mt-3 hover:cursor-pointer rounder-md w-[90vw] md:w-[60vw] rounded-md">
+        <div *ngIf="sightingsArray.length === 0">
+            No sightings yet, hang tight.
+        </div>
+        <div class="flex flex-start w-full justify-between" *ngIf="sightingsArray.length > 0">
+                <div [className]="
+                currentPage === page ?
+                'bg-pink-accent w-[40px] h-[40px] text-center rounded-t-lg text-2xl border-x border-t' :
+                'bg-yellow-primary w-[40px] h-[40px] text-center rounded-t-lg text-2xl border-x border-t border-b'"
+                *ngFor="let page of totalPages" (click)="onPageChange(page)">{{page}}</div>
+                <div class="w-full border-b"></div>
+        </div>
+        <div class="md:w-full">
+            <div *ngFor="let sighting of sightingsArray" 
+                class="py-2 px-5 border-b bg-pink-accent flex border-x borderb">
+                <img *ngIf="sighting.image !== null" [src]="sighting.image" class="rounded-md w-32 mt-2">
+                <div class="flex flex-col justify-start ml-5">
+                    <div>@{{sighting.user_id}}</div>
+                    <div>Reported on: {{sighting.date_time}}</div>
+                    <div>{{sighting.content}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
